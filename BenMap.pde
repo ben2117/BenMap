@@ -4,7 +4,7 @@ Node activeNode;
 
 
 void setup(){
- size(800, 800, P3D); 
+ size(800, 800); 
  rectWidth = width/4;
 }
 
