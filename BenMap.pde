@@ -3,9 +3,16 @@ int rectWidth;
 Node activeNode;
 FlashCard flash;
 
+<<<<<<< HEAD
 void setup() {
   size(800, 800); 
   rectWidth = width/4;
+=======
+
+void setup(){
+ size(800, 800); 
+ rectWidth = width/4;
+>>>>>>> FETCH_HEAD
 }
 
 ArrayList<Node> nodes = new ArrayList<Node>();
