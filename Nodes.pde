@@ -1,40 +1,39 @@
 public class Node {
   String content;
-  float[] loc = new float[5];
   Node parent;
-
+  ArrayList<Node> children = new ArrayList<Node>();
+  Location location;
 
   public Node(String content, float x, float y) {
     this.content = content;
-    loc[0] = x;
-    loc[1] = y;
-    loc[2] = x+50;
-    loc[3] = y+50;
+    this.location = new Location(x, y);
   }
 
   public Node(Node parent) {
     this.parent = parent;
     content = "";
-    loc[0] = parent.loc[2] ;
-    loc[1] = parent.loc[3] ;
-    loc[2] = parent.loc[2] + 10;
-    loc[3] = parent.loc[3] + 10;
+    this.location = new Location(parent.location.ex+50, parent.location.ey+50);
   }
 
   public void drawMe() {
-    if (parent != null) {
-      line(parent.loc[0], parent.loc[1], loc[0], loc[1]);
+   if (parent != null) {
+      line(parent.location.ex, parent.location.ey, this.location.x, this.location.y);
       stroke(126);
     }
+    ellipse(location.x, location.y, 10, 10);
+    ellipse(location.ex, location.ey, 10, 10);
     textSize(12);
-    text(content, loc[0], loc[1]); 
+    text(content, location.x, location.y); 
     fill(0, 102, 153);
   }
 
   public void addText(char k) {
     content += k;
-    loc[2]+=1;
-    loc[3]+=1;
+    location.ex += 5.8;
+  }
+  public void increaseEY(char x){
+    content += x;
+    location.ey += 15;
   }
 
   public void deleteText() {
@@ -45,5 +44,6 @@ public class Node {
     Node node = new Node(this);
     nodes.add(node);
     activeNode = nodes.get(nodes.size()-1 );
+    //activeNode = this;
   }
 }
