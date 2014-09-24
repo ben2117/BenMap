@@ -26,6 +26,18 @@ public class Node {
     text(content, location.x, location.y); 
     fill(0, 102, 153);
   }
+  
+  public void drawMe(float x, float y) {
+   if (parent != null) {
+      line(parent.location.ex, parent.location.ey, x, y);
+      stroke(126);
+    }
+    ellipse(x, y, 10, 10);
+    ellipse(x + location.dx, y + location.dy, 10, 10);
+    textSize(12);
+    text(content, x, y); 
+    fill(0, 102, 153);
+  }
 
   public void addText(char k) {
     content += k;
@@ -34,6 +46,7 @@ public class Node {
   public void increaseEY(char x){
     content += x;
     location.ey += 15;
+    location.ex = location.x;
   }
 
   public void deleteText() {

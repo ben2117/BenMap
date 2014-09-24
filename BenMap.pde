@@ -1,18 +1,12 @@
 boolean view = true;
+boolean clicked = false;
 int rectWidth;
 Node activeNode;
 FlashCard flash;
 
-<<<<<<< HEAD
 void setup() {
   size(800, 800); 
   rectWidth = width/4;
-=======
-
-void setup(){
- size(800, 800); 
- rectWidth = width/4;
->>>>>>> FETCH_HEAD
 }
 
 ArrayList<Node> nodes = new ArrayList<Node>();
@@ -23,16 +17,52 @@ void draw() {
     for (Node n : nodes) {
       n.drawMe();
     }
+    if(movingNode != null){
+      movingNode.drawMe(mouseX, mouseY);
+        
+    }
   } else {
-      
     flash.drawMe();
   }
 }
 
+
+Node movingNode;
+boolean locked = false;
+
 void mouseClicked() {
-  Node node = new Node("hi", mouseX, mouseY);
-  nodes.add(node);
-  activeNode = nodes.get(nodes.size()-1 );
+  
+  boolean overn = false;
+
+
+  if(locked == true){
+    movingNode.location.x = mouseX;
+    movingNode.location.y = mouseY;
+    movingNode.location.ex = mouseX + movingNode.location.dx;
+    movingNode.location.ey = mouseY + movingNode.location.dy;
+    
+    movingNode = null;
+    locked = false;
+    overn = true;
+  }
+  
+  for (Node n : nodes) {
+    if(mouseX > n.location.x && mouseX < n.location.ex &&
+     mouseY > n.location.y && mouseY < n.location.ey){
+         print("gotanode");
+         movingNode = n; 
+         activeNode = n;
+         overn = true;
+         locked = true;
+         n.location.difference();
+     } 
+  }
+  if(!overn && locked == false){
+    Node node = new Node("hi", mouseX, mouseY);
+    nodes.add(node);
+    activeNode = nodes.get(nodes.size()-1 );
+  }
+  
 
 }
 
@@ -77,6 +107,7 @@ void keyPressed() {
         activeNode.addText(x);
     }
   } else { //flash card mode
+      
       if (keyCode == RIGHT) {
         print("right");
         flash = new FlashCard(activeNode); 
