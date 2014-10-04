@@ -1,5 +1,5 @@
 public class Node {
-  String content;
+  String content = "";
   Node parent;
   ArrayList<Node> children = new ArrayList<Node>();
   Location location;
@@ -11,7 +11,6 @@ public class Node {
 
   public Node(Node parent) {
     this.parent = parent;
-    content = "";
     this.location = new Location(parent.location.ex+50, parent.location.ey+50);
   }
 
@@ -53,10 +52,18 @@ public class Node {
     content = content.substring( 0, content.length()-1 );
   }
 
-  public void subNode() {
-    Node node = new Node(this);
-    nodes.add(node);
-    activeNode = nodes.get(nodes.size()-1 );
+  public void subNode(String type) {
+    if(type == "topic"){
+      Node nde = new TopicNode(this);
+      nodes.add(nde);
+      activeNode = nodes.get(nodes.size()-1 );
+      
+    }
+    if(type == "main"){
+      Node node = new Node(this);
+      nodes.add(node);
+      activeNode = nodes.get(nodes.size()-1 );
+    }
     //activeNode = this;
   }
 }

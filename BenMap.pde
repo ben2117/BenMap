@@ -11,11 +11,16 @@ void setup() {
 
 ArrayList<Node> nodes = new ArrayList<Node>();
 
+String interfaceString = "Node Type: MAIN, topic, data, point";
+
 void draw() {
   background(255);
+  text(interfaceString, 50, 50);
   if (view) {
     for (Node n : nodes) {
-      n.drawMe();
+      if(movingNode != n){
+        n.drawMe();
+      }
     }
     if(movingNode != null){
       movingNode.drawMe(mouseX, mouseY);
@@ -24,6 +29,7 @@ void draw() {
   } else {
     flash.drawMe();
   }
+  //print(interfaceString);
 }
 
 
@@ -58,13 +64,29 @@ void mouseClicked() {
      } 
   }
   if(!overn && locked == false){
-    Node node = new Node("hi", mouseX, mouseY);
-    nodes.add(node);
-    activeNode = nodes.get(nodes.size()-1 );
+    if(mouseY > 70){
+      Node node = new MainNode("hi", mouseX, mouseY);
+      nodes.add(node);
+      activeNode = nodes.get(nodes.size()-1 );
+    }
   }
   
+  if(mouseX > 159 && mouseX < 188 && mouseY > 38 && mouseY < 53){
+    interfaceString = "Node Type: main, TOPIC, data, point";
+  }
+  else if(mouseX > 120 && mouseX < 147 && mouseY > 38 && mouseY < 53){
+    interfaceString = "Node Type: MAIN, topic, data, point";
+  }
+  else if(mouseX > 198 && mouseX < 221 && mouseY > 38 && mouseY < 53){
+    interfaceString = "Node Type: main, topic, DATA, point";
+  }
+  else if(mouseX > 231 && mouseX < 264 && mouseY > 38 && mouseY < 53){
+    interfaceString = "Node Type: main, topic, data, POINT";
+  }
 
 }
+
+
 
 void keyPressed() {
 
@@ -82,9 +104,16 @@ void keyPressed() {
   if (view) { //it is in mind map mode
     if (keyCode == RIGHT) {
       print("right");
-        Node ph = activeNode;
-        activeNode.subNode();
-        ph.children.add(activeNode);
+      String input = "";
+        if(interfaceString == "Node Type: main, TOPIC, data, point"){
+         input = "topic";
+        }
+        if(interfaceString == "Node Type: MAIN, topic, data, point"){
+         input = "main";
+        }
+         Node ph = activeNode;
+         activeNode.subNode(input);
+         ph.children.add(activeNode);
     } else if (keyCode == LEFT) {
       print("left");
       if(activeNode.parent != null){
@@ -94,19 +123,9 @@ void keyPressed() {
     else if (keyCode == DOWN){
       activeNode = activeNode.children.get(activeNode.children.size()-1);
     
-    } else if (keyCode == ENTER || keyCode == RETURN) {
-        print("Enter"); 
-        char x = key;
-        activeNode.increaseEY(x);
-    } else if (keyCode == 8) {
-        print("d");
-        activeNode.deleteText();
-    } else {
-        char x = key;
-        print(key);
-        activeNode.addText(x);
-    }
-  } else { //flash card mode
+    } 
+  } 
+  else { //flash card mode
       
       if (keyCode == RIGHT) {
         print("right");
@@ -123,6 +142,33 @@ void keyPressed() {
        flash = new FlashCard(activeNode);  
     } 
   }
+  
+  ///Typing stuff
+  if (keyCode == ENTER || keyCode == RETURN) {
+        print("Enter"); 
+        char x = key;
+        activeNode.increaseEY(x);
+    } else if (keyCode == 8) {
+        if(locked == true){
+         int i = 0;
+         for (Node n : nodes) {
+           
+           if( n == movingNode){
+             nodes.remove(i);
+             movingNode = null;
+             locked = false;
+             break;
+           }
+           i++;
+         }
+        }
+        print("d");
+        activeNode.deleteText();
+    } else {
+        char x = key;
+        print(key);
+        activeNode.addText(x);
+    }
 }
 
 
